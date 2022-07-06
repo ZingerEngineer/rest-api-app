@@ -9,11 +9,12 @@ const NinjaSchema = new Schema({
     rank:{
         type:String,
     },
-    availability:{
+    available:{
         type:Boolean,
         default:false
     }
 });
 const Ninja = mongoose.model('Ninja', NinjaSchema);
+const Ramy = 5;
 
 module.exports = Ninja;

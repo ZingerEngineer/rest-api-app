@@ -1,28 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const Ninja = require("../models/ninja");
 
-router.get('/ninjas', function (req, res) {
-    res.send({ METHOD: "GET" })
-})
+router.get("/ninjas", function (req, res, next) {
+  res.send({ METHOD: "GET" });
+});
 
-router.post('/ninjas', function (req, res) {
-    console.log(req.body);
-    res.send({
-        METHOD: "POST",
-        name: req.body.name,
-        rank: req.body.rank
-
+router.post("/ninjas", function (req, res, next) {
+  Ninja.create(req.body)
+    .then(function (ninja) {
+      res.send(ninja);
     })
-})
+    .catch(next);
+});
 
+router.put("/ninjas/:id", function (req, res, next) {
+    Ninja.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true}).then(function(ninja){
+        res.send(ninja)});
+});
 
-router.put('/ninjas/:id', function (req, res) {
-    res.send({ METHOD: "PUT" })
-})
-
-
-router.delete('/ninjas/:id', function (req, res) {
-    res.send({ METHOD: "DELETE" })
-})
+router.delete("/ninjas/:id", function (req, res, next) {
+  Ninja.findByIdAndRemove({_id: req.params.id}).then(function(ninja){
+    res.send(ninja);
+  });
+  
+});
 
 module.exports = router;
