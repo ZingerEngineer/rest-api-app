@@ -3,7 +3,12 @@ const router = express.Router();
 const Ninja = require("../models/ninja");
 
 router.get("/ninjas", function (req, res, next) {
-  res.send({ METHOD: "GET" });
+  Ninja.geoNear(
+    {type:"point",coordinates:[parseFloat(req.query.lng),parseFloat(req.query.lat)]},
+    {maxDistance:100000,spherical:true}
+  ).then(function(ninja){
+    res.send(ninja)
+  })
 });
 
 router.post("/ninjas", function (req, res, next) {
